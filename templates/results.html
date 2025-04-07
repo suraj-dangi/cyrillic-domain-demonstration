@@ -7,33 +7,27 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <style>
         :root {
-            --primary: #5a67d8;
+            --primary: #5a67d8; /* Indigo */
             --primary-hover: #4c51bf;
             --primary-light: #ebf4ff;
-            --bg-color: #f7fafc;
+            --bg-color: #f7fafc; /* Tailwind gray-100 */
             --card-bg: #ffffff;
-            --text-primary: #2d3748;
-            --text-secondary: #4a5568;
-            --text-light: #718096;
-            --border-color: #e2e8f0;
-            --warning-bg: #fffbeb;
-            --warning-border: #fbbf24;
-            --warning-text: #92400e;
-            --success-bg: #f0fff4;
-            --success-border: #48bb78;
-            --success-text: #276749;
-            --danger-bg: #fff5f5;
-            --danger-border: #fc8181;
-            --danger-text: #c53030;
-            --code-bg: #f7fafc;
+            --text-primary: #2d3748; /* Tailwind gray-800 */
+            --text-secondary: #4a5568; /* Tailwind gray-600 */
+            --text-light: #718096; /* Tailwind gray-500 */
+            --border-color: #e2e8f0; /* Tailwind gray-300 */
+            --warning-bg: #fffbeb; /* Tailwind yellow-50 */
+            --warning-border: #fbbf24; /* Tailwind yellow-400 */
+            --warning-text: #92400e; /* Tailwind yellow-800 */
+            --success-bg: #f0fff4; /* Tailwind green-50 */
+            --success-border: #48bb78; /* Tailwind green-500 */
+            --success-text: #276749; /* Tailwind green-800 */
+            --danger-bg: #fff5f5; /* Tailwind red-50 */
+            --danger-border: #fc8181; /* Tailwind red-400 */
+            --danger-text: #c53030; /* Tailwind red-700 */
+            --code-bg: #f7fafc; /* Tailwind gray-100 */
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
@@ -41,465 +35,189 @@
             color: var(--text-primary);
             padding: 1.5rem;
         }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        h1, h2, h3 {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        h1 {
-            font-size: 1.875rem;
-            margin-bottom: 0.5rem;
-            padding-bottom: 0.5rem;
-        }
-
-        h1 span {
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-
-        h2 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        h3 {
-            font-size: 1.125rem;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        p {
-            margin-bottom: 1rem;
-            color: var(--text-secondary);
-        }
-
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1, h2, h3 { color: var(--primary); font-weight: 600; }
+        h1 { font-size: 1.875rem; margin-bottom: 0.5rem; padding-bottom: 0.5rem; }
+        h1 span { color: var(--text-secondary); font-weight: 400; }
+        h2 { font-size: 1.25rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color); }
+        h3 { font-size: 1.125rem; margin-bottom: 0.75rem; color: var(--text-primary); }
+        p { margin-bottom: 1rem; color: var(--text-secondary); }
         .cache-status {
-            font-size: 0.875rem;
-            color: var(--text-light);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
+            font-size: 0.875rem; color: var(--text-light); margin-bottom: 1.5rem; display: flex; align-items: center;
         }
+        .cache-status::before { content: "{% if cache_hit %}🔍{% else %}⚡{% endif %}"; margin-right: 0.5rem; } /* Dynamic icon */
 
-        .cache-status::before {
-            content: "🔍";
-            margin-right: 0.5rem;
-        }
+        .main-container { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.5rem; }
+        .column { background: var(--card-bg); padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .left-column { flex: 3; min-width: 600px; }
+        .right-column { flex: 1.5; min-width: 350px; max-height: 700px; display: flex; flex-direction: column;}
 
-        .main-container {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
+        .domain-content { flex: 1; overflow-y: auto; padding-right: 0.5rem; }
+        .domain-content::-webkit-scrollbar { width: 6px; }
+        .domain-content::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .domain-content::-webkit-scrollbar-thumb { background: #c5c7d0; border-radius: 10px; }
+        .domain-content::-webkit-scrollbar-thumb:hover { background: #a0a0a0; }
 
-        .column {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .left-column {
-            flex: 3;
-            min-width: 300px;
-        }
-
-        .right-column {
-            flex: 1.5;
-            min-width: 300px;
-            max-height: 600px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .domain-content {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 0.5rem;
-        }
-
-        /* Scrollbar styling */
-        .domain-content::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .domain-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        .domain-content::-webkit-scrollbar-thumb {
-            background: #c5c7d0;
-            border-radius: 10px;
-        }
-
-        .domain-content::-webkit-scrollbar-thumb:hover {
-            background: #a0a0a0;
-        }
-
-        .email-template {
-            margin: 1.5rem 0;
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            overflow: hidden;
-            background-color: var(--code-bg);
-        }
-
-        .email-template-header {
-            padding: 0.75rem 1rem;
-            background-color: #f1f5f9;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .email-template-header h3 {
-            margin: 0;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .email-template pre {
-            margin: 0;
-            padding: 1rem;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-size: 0.75rem;
-            max-height: 400px;
-            overflow-y: auto;
-            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-            color: var(--text-secondary);
-        }
-
-        .email-template code {
-            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1rem;
-        }
-
-        .customize-button, .back-button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.625rem 1.25rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .back-button {
-            background-color: var(--text-secondary);
-        }
-
-        .customize-button:hover, .back-button:hover {
-            background-color: var(--primary-hover);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-            transform: translateY(-1px);
-        }
-
-        .back-button:hover {
-            background-color: var(--text-primary);
-        }
-
-        .customize-button:active, .back-button:active {
-            transform: scale(0.98);
-        }
-
-        /* Domain Spoofing Styles */
-        .domain-list {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .domain-list li {
-            margin-bottom: 1.25rem;
-        }
-
-        .domain-example {
-            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-            font-size: 0.9rem;
-            color: #e53e3e;
-            background-color: #fff5f5;
-            padding: 0.375rem 0.75rem;
-            border-radius: 0.375rem;
-            border: 1px solid #fed7d7;
-            display: inline-block;
-            margin-bottom: 0.5rem;
-        }
-
-        .domain-note {
-            font-size: 0.75rem;
-            background-color: var(--success-bg);
-            border-left: 3px solid var(--success-border);
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.25rem;
-            color: var(--success-text);
+        /* Email Template Source View */
+        .email-template { margin: 1.5rem 0; border: 1px solid var(--border-color); border-radius: 0.5rem; overflow: hidden; background-color: var(--code-bg); }
+        .email-template-header { padding: 0.75rem 1rem; background-color: #f1f5f9; border-bottom: 1px solid var(--border-color); }
+        .email-template-header h3 { margin: 0; font-size: 0.875rem; color: var(--text-secondary); font-weight: 500;}
+        .email-template pre { margin: 0; padding: 1rem; white-space: pre-wrap; word-wrap: break-word; font-size: 0.75rem; max-height: 450px; overflow-y: auto; font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; color: var(--text-secondary); }
+        .email-template code { font-family: inherit; }
+        /* --- UPDATED LOGO STYLE --- */
+        .email-template img.logo-in-code {
+            max-height: 35px; /* Reduced size */
+            vertical-align: middle;
+            /* Reduced bottom margin */
+            margin: 0 auto 5px auto;
             display: block;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            object-fit: contain;
         }
+
+        /* Buttons */
+        .button-container { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; gap: 0.75rem;}
+        .customize-button, .back-button { background-color: var(--primary); color: white; border: none; padding: 0.625rem 1.25rem; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); text-decoration: none; display: inline-block; }
+        .back-button { background-color: var(--text-secondary); }
+        .customize-button:hover, .back-button:hover { background-color: var(--primary-hover); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); transform: translateY(-1px); }
+        .back-button:hover { background-color: var(--text-primary); }
+        .customize-button:active, .back-button:active { transform: scale(0.98); }
+
+        /* Domain Spoofing Section */
+        .domain-list { list-style-type: none; padding-left: 0; }
+        .domain-list li { margin-bottom: 1.25rem; }
+        .cyrillic-domain-example { font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace; font-size: 0.9rem; color: var(--danger-text); background-color: var(--danger-bg); padding: 0.375rem 0.75rem; border-radius: 0.375rem; border: 1px solid var(--danger-border); display: inline; margin: 0; line-height: normal; vertical-align: baseline; text-decoration: none; font-weight: normal; font-style: normal; word-wrap: break-word; }
+        .domain-note { font-size: 0.75rem; background-color: var(--success-bg); border-left: 3px solid var(--success-border); padding: 0.5rem 0.75rem; border-radius: 0.25rem; color: var(--success-text); display: block; margin-top: 0.5rem; }
+        .copy-button { background-color: #e2e8f0; border: none; border-radius: 4px; padding: 2px 8px; font-size: 0.7rem; color: var(--text-secondary); cursor: pointer; margin-left: 8px; transition: all 0.2s; vertical-align: middle; }
+        .copy-button:hover { background-color: #cbd5e0; }
+        .copy-button:active { transform: scale(0.95); }
+        .copy-success { background-color: var(--success-border); color: white; }
 
         /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            animation: fadeIn 0.2s;
-        }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); animation: fadeIn 0.2s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content { background-color: var(--card-bg); margin: 5% auto; padding: 1.5rem; border: 1px solid var(--border-color); width: 90%; max-width: 650px; border-radius: 0.75rem; position: relative; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); animation: slideDown 0.3s; }
+        @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .close-button { color: var(--text-light); position: absolute; top: 1rem; right: 1.25rem; font-size: 1.5rem; font-weight: bold; transition: color 0.2s; }
+        .close-button:hover, .close-button:focus { color: var(--text-primary); text-decoration: none; cursor: pointer; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background-color: var(--card-bg);
-            margin: 5% auto;
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
-            width: 90%;
-            max-width: 600px;
-            border-radius: 0.75rem;
-            position: relative;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            animation: slideDown 0.3s;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .close-button {
-            color: var(--text-light);
-            position: absolute;
-            top: 1rem;
-            right: 1.25rem;
-            font-size: 1.5rem;
-            font-weight: bold;
-            transition: color 0.2s;
-        }
-
-        .close-button:hover,
-        .close-button:focus {
-            color: var(--text-primary);
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* Editable Fields Area */
-        .email-edit-area h3 {
-            margin-top: 0;
-            color: var(--primary);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.75rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .email-edit-area label {
-            display: block;
-            margin-top: 1rem;
-            font-weight: 500;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.375rem;
-        }
-
-        .email-edit-area input[type="text"],
-        .email-edit-area textarea {
-            width: 100%;
-            padding: 0.625rem 0.875rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 0.375rem;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-            background-color: #f8fafc;
-        }
-
-        .email-edit-area input[type="text"]:focus,
-        .email-edit-area textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-            background-color: white;
-        }
-
-        .email-edit-area textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
+        /* Editable Fields Area Styles */
+        .email-edit-area h3 { margin-top: 0; color: var(--primary); border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1.25rem; font-size: 1.25rem;}
+        .email-edit-area label { display: block; margin-top: 1rem; font-weight: 500; font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.375rem; }
+        .email-edit-area input[type="text"], .email-edit-area textarea { width: 100%; padding: 0.625rem 0.875rem; margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: 0.375rem; font-family: 'Inter', sans-serif; font-size: 0.875rem; transition: all 0.2s; background-color: #f8fafc; }
+        .email-edit-area input[type="text"]:focus, .email-edit-area textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.15); background-color: white; }
+        .email-edit-area textarea { min-height: 140px; resize: vertical; }
+        .modal-content .input-note { font-size: 0.75rem; color: var(--text-light); margin-top: -0.75rem; margin-bottom: 1rem; } /* Style for logo input note */
 
         /* Footer section */
-        .footer-section {
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-light);
-        }
-
-        .warning {
-            background-color: var(--warning-bg);
-            border-left: 3px solid var(--warning-border);
-            padding: 0.75rem 1rem;
-            border-radius: 0.375rem;
-            color: var(--warning-text);
-            font-size: 0.75rem;
-            margin: 1rem 0;
-        }
-
-        .warning p {
-            margin: 0;
-            color: var(--warning-text);
-        }
+        .footer-section { margin-top: 2rem; text-align: center; font-size: 0.75rem; color: var(--text-light); }
+        .warning { background-color: var(--warning-bg); border-left: 3px solid var(--warning-border); padding: 0.75rem 1rem; border-radius: 0.375rem; color: var(--warning-text); font-size: 0.875rem; margin: 1rem auto; display: inline-block; } /* Centered warning */
+        .warning p { margin: 0; color: var(--warning-text); font-weight: 500;}
 
         /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .main-container {
-                flex-direction: column;
-            }
-
-            .left-column, .right-column {
-                width: 100%;
-            }
-
-            .right-column {
-                max-height: 400px;
-            }
-
-            .button-container {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .customize-button, .back-button {
-                width: 100%;
-                text-align: center;
-            }
-
-            .modal-content {
-                width: 95%;
-                padding: 1.25rem;
-            }
-
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            h2 {
-                font-size: 1.125rem;
-            }
+        @media (max-width: 1024px) {
+            .main-container { flex-direction: column; }
+            .left-column, .right-column { width: 100%; max-height: none; }
         }
+        @media (max-width: 768px) {
+             h1 { font-size: 1.5rem; }
+             h2 { font-size: 1.125rem; }
+             .modal-content { width: 95%; padding: 1.25rem; margin-top: 10%;}
+             .button-container { flex-direction: column; gap: 0.75rem; }
+             .customize-button, .back-button { width: 100%; text-align: center; }
+        }
+        #displayLogoImg {
+          width: auto;
+          height: 80px;
+          /* You might want to keep display: block here too,
+             or continue managing it via JS if you need to toggle it */
+          object-fit: contain;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Advanced Security Analysis: <span>{{ url }}</span></h1>
 
-        <div class="cache-status">Using cached data ({{ cache_age }} old).</div>
+        <div class="cache-status">{% if cache_hit %}Using cached data ({{ cache_age }} old).{% else %}Live analysis performed (results cached).{% endif %}</div>
 
         {% if error %}
             <div class="column error">
                 <h2>Error Analyzing URL</h2>
                 <p>{{ error }}</p>
-                <div class="back-link"><a href="/">Try Another URL</a></div>
+                 <div class="button-container" style="justify-content: flex-end;"> <a href="/" class="back-button">Analyze Another Website</a> </div>
             </div>
         {% else %}
             <div class="main-container">
                 <div class="column left-column">
                     <h2>Interactive Email Template Builder</h2>
-                    <p>Explore how targeted emails can be crafted using branding elements and information from the analyzed website. Customize the template below to see how easily convincing emails can be created.</p>
+                    <p>Explore how targeted emails are crafted. The HTML source below uses the target's domain and attempts to use its logo/favicon. Click "Customize Email Template" to modify content and logo.</p>
 
-                    <!-- HTML Source -->
                     <div class="email-template">
                         <div class="email-template-header">
                             <h3>Email HTML Structure</h3>
                         </div>
-                        <pre><code id="emailHtmlSource"><table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color:#f7fafc; padding: 20px; font-family: 'Inter', sans-serif;">
-<tr><td>
-  <table width="600" border="0" cellpadding="0" cellspacing="0" align="center" style="background-color:#ffffff; border: 1px solid #e2e8f0; border-radius: 8px; margin: auto;">
-    <tr><td style="padding: 16px 24px; background-color: #5a67d8; border-radius: 8px 8px 0 0; text-align: left; color: #ffffff; display: flex; align-items: center; gap: 12px;">
-        {% if favicon_url %}
-            <img src="{{ favicon_url }}" alt="Logo" style="height: 24px; width: auto;">
-        {% endif %}
-        <h2 style="margin:0; color: #ffffff; font-weight: 600; font-size: 18px;">Security Update</h2>
-    </td></tr>
-    <tr><td style="padding: 24px; font-size: 14px; line-height: 1.6; color: #2d3748;">
-        <p><strong id="displaySalutation">Hello, Valued Customer,</strong></p>
-        <div id="displayBody">
-            <p>We've spotted unexpected activity on your {{ domain }} account.</p>
-            {% if scraped_data.description %}<p>Since {{ domain }} is all about "{{ scraped_data.description|truncate(80) }}...", keeping your account safe is our top concern.</p>{% else %}<p>Your account's security is our utmost priority.</p>{% endif %}
-            <p>Please verify your identity and review recent activity by clicking the secure link below:</p>
-            <p style="text-align: center; margin: 20px 0;">
-                <a href="#" style="background-color: #5a67d8; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: 500; display: inline-block;">Secure My Account</a>
-            </p>
-            <p>Act within 24 hours to prevent temporary suspension.</p>
-            <p>Thank you,<br>The {{ domain }} Security Team</p>
-        </div>
-    </td></tr>
-    <tr><td style="padding: 12px 24px; text-align: center; border-top: 1px solid #e2e8f0; background-color: #f8fafc; font-size: 12px; color: #718096; border-radius: 0 0 8px 8px;">
-        <p id="displayFooter" style="margin:0;">© {{ current_year }} {{ domain }}. Security Notification. Do not reply directly to this email.</p>
-    </td></tr>
-  </table>
-</td></tr>
-</table></code></pre>
-                    </div>
+                        <pre>
+                            <code id="emailHtmlSource">
 
-                    <div class="button-container">
+<div class="email-container">
+
+<div style="text-align: center; margin-bottom: 20px;">
+  <img src="{{ logo_url | default('', true) }}" alt="{{ domain }} Logo" class="logo-in-code" id="displayLogoImg" style="max-width: 80px; height: auto; display: block; margin-left: auto; margin-right: auto; display: {% if logo_url %}block{% else %}none{% endif %};"> {# Hide if no initial logo #}
+</div>
+<p><strong>Dear Tina,</strong></p>
+
+<p>Could you please share the final curriculum maps for Stage 5 Languages? I need to include them in a report I'm compiling this afternoon.</p>
+<p>Please upload them directly to the central planning folder via the portal link below – it's the quickest way for me to access them before my next meeting.</p>
+                            <p style="text-align: left; margin: 25px 0;">
+                                <a href="https://attacker-website.com/login" target="_blank" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Secure Portal: Upload file </a>
+
+                            </p>
+<p>Appreciate your speedy help with this!</p>
+<p>Best regards,</p>
+<p>
+  <strong>Anna Masters</strong><br>
+  Principal<br>
+  Merici College
+</p>
+
+<div class="footer">
+   <p id="displayFooter" style="margin:0;">© {{ current_year }} {{ domain }}.</p> {# Default text set here, updated by JS #}
+</div>
+</div>
+                            </code>
+                        </pre>
+                    </div><div class="button-container">
                         <button id="editEmailButton" class="customize-button">Customize Email Template</button>
                         <a href="/" class="back-button">Analyze Another Website</a>
                     </div>
                 </div>
-
                 <div class="column right-column">
                     <h2>Domain Spoofing</h2>
-                    <p>These examples show how similar-looking characters can be used to create convincing domain name imitations that are difficult to distinguish from the original.</p>
-
+                     <p>These examples show how similar-looking characters can be used to create convincing domain name imitations. Attackers append TLDs like <code>.com, .org, .biz</code> etc.</p>
                     <div class="domain-content">
                         {% if cyrillic_domains %}
                             <ul class="domain-list">
                                 {% for item in cyrillic_domains %}
                                     <li>
-                                        <div class="domain-example">{{ item.domain }}</div>
+                                        <div class="domain-example">
+                                            {{ item.domain }} {# Display full domain #}
+                                            <button class="copy-button" data-domain="{{ item.domain }}">Copy</button>
+                                        </div>
                                         <div class="domain-note"><strong>Character Swap:</strong> {{ item.note }}</div>
                                     </li>
                                 {% endfor %}
                             </ul>
-                            <p><small>The visual similarity of these domains depends on the font used by browsers and email clients.</small></p>
+                            <p><small>Actual appearance depends on browser/client.</small></p>
                         {% else %}
-                            <p>No domain spoofing examples generated for <code>{{ domain }}</code> (no suitable characters found for substitution).</p>
+                             <p>No domain spoofing examples generated for <code>{{ domain }}</code>.</p>
                         {% endif %}
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-section">
-                <div class="warning">
-                    <p>⚠️ <strong>Reminder:</strong> Educational demo ONLY. Highlights potential email and domain spoofing tactics.</p>
-                </div>
+                    </div></div></div><div class="footer-section">
+                 <div class="warning">
+                     <p>⚠️ <strong>Reminder:</strong> This tool is for educational purposes ONLY to demonstrate potential phishing vectors. <strong>DO NOT</strong> use for malicious activities.</p>
+                 </div>
             </div>
         {% endif %}
 
@@ -508,93 +226,163 @@
                 <span class="close-button" id="closeModalButton">&times;</span>
                 <div class="email-edit-area">
                     <h3>Email Content Editor</h3>
+
+                    {# Logo URL Input #}
+                    <label for="logo_url">Logo Image URL:</label>
+                    <input type="text" id="logo_url" name="logo_url" placeholder="Enter URL or leave blank" value="{{ logo_url | default('', true) }}"> {# Pre-filled #}
+                     <p class="input-note">Enter a direct URL to an image file (e.g., .png, .jpg). Auto-detected if available.</p>
+
+                    {# Existing Inputs with dynamic default values #}
                     <label for="subject">Subject Line:</label>
-                    <input type="text" id="subject" name="subject" value="Important Security Update for Your {{ domain }} Account">
+                    <input type="text" id="subject" name="subject" value="Action Required: Verify Your Account Activity">
 
                     <label for="salutation">Greeting:</label>
-                    <input type="text" id="salutation" name="salutation" value="Dear Customer,">
-                    <label for="body">Message Body:</label>
-                    <textarea id="body" name="body">Is that you?
+                    <input type="text" id="salutation" name="salutation" value="Dear Valued Customer,">
 
-Unusual activity was detected on your {{ domain }} account{% if scraped_data.description %}—specifically regarding "{{ scraped_data.description|truncate(80) }}"{% endif %}.
+                    <label for="body">Message Body (Use double newlines for paragraphs):</label>
+                    <textarea id="body" name="body">We detected unusual activity on your {{ domain }} account regarding {% if scraped_data.description %}"{{ scraped_data.description|truncate(50) }}"{% else %}recent access{% endif %}.
 
-Verify your identity now to avoid suspension: [Secure Link].
+For your security, please verify your identity and review recent activity using the secure portal link below.
 
-Failure to verify within 24 hours may result in temporary account suspension.
-
+Failure to verify within 24 hours may lead to temporary suspension.
 
 Thank you,
 The {{ domain }} Security Team</textarea>
 
                     <label for="footer">Footer Text:</label>
-                    <input type="text" id="footer" name="footer" value="© {{ current_year }} {{ domain }}. Security Notification. Do not reply directly to this email.">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Get references to elements
-        const subjectInput = document.getElementById('subject');
-        const salutationInput = document.getElementById('salutation');
-        const bodyInput = document.getElementById('body');
-        const footerInput = document.getElementById('footer');
-
-        // References to display elements in the HTML source
-        const displaySalutation = document.getElementById('displaySalutation');
-        const displayBody = document.getElementById('displayBody');
-        const displayFooter = document.getElementById('displayFooter');
-
-        // Modal elements
-        const modal = document.getElementById('editModal');
-        const editButton = document.getElementById('editEmailButton');
-        const closeButton = document.getElementById('closeModalButton');
-
-        // Function to update the content displayed in the source code
-        function updateEmailContent() {
-            if (displaySalutation) displaySalutation.textContent = salutationInput.value;
-
-            if (displayBody) {
-                displayBody.innerHTML = bodyInput.value
-                    .split('\n\n').map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
-            }
-
-            if (displayFooter) displayFooter.textContent = footerInput.value;
-
-            // Update the H2 in the source code header
-            const sourceHeaderH2 = document.querySelector('#emailHtmlSource h2');
-            if (sourceHeaderH2) {
-                const baseSubject = subjectInput.value.split(' for Your ')[0] || 'Security Alert';
-                sourceHeaderH2.textContent = baseSubject.replace('Important ', '');
-            }
-        }
-
-        // Add event listeners to input fields
-        subjectInput.addEventListener('input', updateEmailContent);
-        salutationInput.addEventListener('input', updateEmailContent);
-        bodyInput.addEventListener('input', updateEmailContent);
-        footerInput.addEventListener('input', updateEmailContent);
-
-        // Modal Logic
-        editButton.onclick = function() {
-            modal.style.display = "block";
-            updateEmailContent();
-        }
-
-        closeButton.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        // Initial call to set the content
+                    <input type="text" id="footer" name="footer" value="© {{ current_year }} {{ domain }}.">
+                </div></div></div></div><script>
         document.addEventListener('DOMContentLoaded', (event) => {
-            updateEmailContent();
-        });
+
+            // Get references to elements (check existence for robustness)
+            const subjectInput = document.getElementById('subject');
+            const salutationInput = document.getElementById('salutation');
+            const bodyInput = document.getElementById('body');
+            const footerInput = document.getElementById('footer');
+            const logoUrlInput = document.getElementById('logo_url'); // New logo input
+
+            // References to display elements IN THE SOURCE CODE VIEW
+            const displaySalutation = document.getElementById('displaySalutation');
+            const displayBody = document.getElementById('displayBody');
+            const displayFooter = document.getElementById('displayFooter');
+            const displayLogoImg = document.getElementById('displayLogoImg'); // Logo image element
+            const displayDomainFallback = document.getElementById('displayDomainFallback'); // Fallback text
+
+            // Modal elements
+            const modal = document.getElementById('editModal');
+            const editButton = document.getElementById('editEmailButton');
+            const closeButton = document.getElementById('closeModalButton');
+
+            // Function to update the content displayed in the source code view
+            function updateEmailContent() {
+                // Update Logo
+                if (displayLogoImg && logoUrlInput) {
+                    const logoUrlValue = logoUrlInput.value.trim();
+                    if (logoUrlValue) {
+                        displayLogoImg.src = logoUrlValue;
+                        displayLogoImg.style.display = 'block'; // Show image
+                        if(displayDomainFallback) displayDomainFallback.style.display = 'none'; // Hide text fallback
+                    } else {
+                        displayLogoImg.src = ''; // Clear src
+                        displayLogoImg.style.display = 'none'; // Hide image
+                        if(displayDomainFallback) displayDomainFallback.style.display = 'block'; // Show text fallback
+                    }
+                } else if (displayDomainFallback) {
+                     // If logo img tag itself is missing, ensure fallback text shows
+                     displayDomainFallback.style.display = 'block';
+                }
+
+                // Update Salutation
+                if (displaySalutation && salutationInput) {
+                    // Use textContent for security unless HTML is intended (like <strong>)
+                    // Ensure the strong tag remains if that's the required structure
+                    displaySalutation.innerHTML = `<strong>${salutationInput.value.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</strong>`; // Escape user input
+                }
+
+                // Update Body
+                if (displayBody && bodyInput) {
+                    const bodyText = bodyInput.value;
+                    // Split into paragraphs by one or more newlines, filtering empty lines
+                    const paragraphs = bodyText.split(/\n\s*\n/).filter(p => p.trim() !== '');
+
+                    let bodyHtml = '';
+                    const includesVerify = bodyText.toLowerCase().includes('verify');
+                    const includesUpload = bodyText.toLowerCase().includes('upload');
+                    let buttonAdded = false; // Flag to ensure button only added once
+
+                    paragraphs.forEach((p) => {
+                         const trimmedP = p.trim();
+                         // Escape HTML in user paragraph content before adding <p> tags
+                         const escapedP = trimmedP.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, '<br>');
+                         bodyHtml += `<p>${escapedP}</p>`;
+
+                         // Add specific buttons if keywords are present and button not already added
+                         // Prioritize Verify button if both keywords exist
+                         if (!buttonAdded) {
+                             if (includesVerify && trimmedP.toLowerCase().includes('verify')) {
+                                bodyHtml += `<p style="text-align: left; margin: 25px 0;"><a href="#" target="_blank" style="background-color: #5a67d8; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Secure Portal: Verify Account</a></p>`;
+                                buttonAdded = true;
+                             } else if (includesUpload && trimmedP.toLowerCase().includes('upload')) {
+                                 bodyHtml += `<p style="text-align: left; margin: 25px 0;"><a href="#" target="_blank" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Secure Portal: Upload file</a></p>`;
+                                 buttonAdded = true;
+                             }
+                         }
+                    });
+                    displayBody.innerHTML = bodyHtml; // Update the body container
+                }
+
+                // Update Footer
+                if (displayFooter && footerInput) {
+                    // Use textContent for safety as footer usually doesn't need HTML
+                    displayFooter.textContent = footerInput.value;
+                }
+                 // Note: Subject input doesn't directly update the visible template in this version
+            }
+
+            // Add event listeners to ALL input fields (only if they exist)
+            if (subjectInput) subjectInput.addEventListener('input', updateEmailContent);
+            if (salutationInput) salutationInput.addEventListener('input', updateEmailContent);
+            if (bodyInput) bodyInput.addEventListener('input', updateEmailContent);
+            if (footerInput) footerInput.addEventListener('input', updateEmailContent);
+            if (logoUrlInput) logoUrlInput.addEventListener('input', updateEmailContent);
+
+            // --- Modal Logic ---
+            if (modal && editButton && closeButton) {
+                editButton.onclick = function() {
+                    modal.style.display = "block";
+                    updateEmailContent(); // Update view when modal opens
+                }
+                closeButton.onclick = function() {
+                    modal.style.display = "none";
+                }
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            } else {
+                 // If elements missing (e.g., on error page), log it or handle gracefully
+                 console.log("Modal elements not found, skipping modal listeners.");
+            }
+
+            // Initial call to populate template based on default modal values
+            updateEmailContent(); // Call on load
+
+            // Copy to clipboard functionality
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('copy-button')) {
+                    const domain = e.target.getAttribute('data-domain');
+                    navigator.clipboard.writeText(domain).then(() => {
+                        e.target.textContent = "Copied!"; e.target.classList.add('copy-success');
+                        setTimeout(() => { e.target.textContent = "Copy"; e.target.classList.remove('copy-success'); }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy: ', err);
+                        e.target.textContent = "Error"; // Indicate copy failure
+                        setTimeout(() => { e.target.textContent = "Copy"; }, 2000);
+                    });
+                }
+            });
+        }); // End DOMContentLoaded
     </script>
 </body>
 </html>
